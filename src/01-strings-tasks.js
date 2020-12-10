@@ -228,13 +228,37 @@ function getRectangleString(width, height) {
  *
  *   'hello' => 'uryyb'
  *   'Why did the chicken cross the road?' => 'Jul qvq gur puvpxra pebff gur ebnq?'
+ *                                             Jul qvq gur puvpxr pebff gur ebnq?
  *   'Gb trg gb gur bgure fvqr!' => 'To get to the other side!'
  *   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
- *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
+ *=> 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const dataUp = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const dataLow = 'abcdefghijklmnopqrstuvwxyz';
+  const res = str.split('');
+  const regDown = /[a-z]/;
+  const regUp = /[A-Z]/;
+
+  const result = res.map((item) => {
+    if (regDown.test(item)) {
+      const code = dataLow.indexOf(item);
+      const newCode = ((code + 13) >= dataLow.length)
+        ? code + 13 - dataLow.length
+        : code + 13;
+      return dataLow[newCode];
+    }
+    if (regUp.test(item)) {
+      const code = dataUp.indexOf(item);
+      const newCode = ((code + 13) >= dataLow.length)
+        ? code + 13 - dataUp.length
+        : code + 13;
+      return dataUp[newCode];
+    }
+    return item;
+  });
+  return result.join('');
 }
 
 /**

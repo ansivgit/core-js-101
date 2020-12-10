@@ -35,8 +35,10 @@ function findElement(arr, value) {
  *    2 => [ 1, 3 ]
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
-function generateOdds(/* len */) {
-  throw new Error('Not implemented');
+function generateOdds(len) {
+  const baseArr = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39];
+  baseArr.length = len;
+  return baseArr;
 }
 
 /**
@@ -275,10 +277,16 @@ function getSecondItems(arr) {
  *  [ 'a', 'b', 'c', null ] => [ 'a', 'b','b', 'c','c','c',  null,null,null,null ]
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  const newArr = [];
+  // eslint-disable-next-line array-callback-return
+  arr.map((item, index) => {
+    const temp = Array(index + 1);
+    temp.fill(item);
+    newArr.push(temp);
+  });
+  return newArr.flat();
 }
-
 
 /**
  * Returns the 3 largest numbers from the specified array
@@ -328,8 +336,45 @@ function getPositivesCount(arr) {
  *   [ 'nine','eight','nine','eight'] => [ 'eight','eight','nine','nine']
  *   [ 'one','one','one','zero' ]     => [ 'zero','one','one','one' ]
  */
-function sortDigitNamesByNumericOrder(/* arr */) {
-  throw new Error('Not implemented');
+function sortDigitNamesByNumericOrder(arr) {
+  const data1 = {
+    zero: 0,
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+    seven: 7,
+    eight: 8,
+    nine: 9,
+  };
+  const data2 = {
+    0: 'zero',
+    1: 'one',
+    2: 'two',
+    3: 'three',
+    4: 'four',
+    5: 'five',
+    6: 'six',
+    7: 'seven',
+    8: 'eight',
+    9: 'nine',
+  };
+  const temp = [];
+  const res = [];
+
+  arr.map((item) => {
+    temp.push(data1[item]);
+    return temp;
+  });
+  temp.sort((a, b) => a - b);
+
+  temp.map((item) => {
+    res.push(data2[item]);
+    return res;
+  });
+  return res;
 }
 
 /**
@@ -472,8 +517,17 @@ function getIdentityMatrix(/* n */) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  const arr = Array(end - start + 1).fill(start);
+
+  const res = arr.map((item, index) => {
+    if (start !== end) {
+      return item + index;
+    }
+    return start;
+  });
+
+  return res;
 }
 
 /**
@@ -540,8 +594,9 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  const res = arr.map((item) => childrenSelector(item));
+  return res.flat();
 }
 
 
@@ -557,10 +612,19 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  let res;
+  if (indexes.length === 1) {
+    res = arr[indexes[0]];
+  }
+  if (indexes.length === 2) {
+    res = arr[indexes[0]][indexes[1]];
+  }
+  if (indexes.length === 3) {
+    res = arr[indexes[0]][indexes[1]][indexes[2]];
+  }
+  return res;
 }
-
 
 /**
  * Swaps the head and tail of the specified array:
@@ -580,10 +644,21 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
-}
+function swapHeadAndTail(arr) {
+  if (arr.length === 1) {
+    return arr;
+  }
+  const midIndex = Math.floor(arr.length / 2); // 4
+  const head = arr.slice(0, midIndex);
+  let tail;
 
+  if ((arr.length % 2) === 0) {
+    tail = arr.slice(midIndex);
+    return [...tail, ...head];
+  }
+  tail = arr.slice(midIndex + 1);
+  return [...tail, arr[midIndex], ...head];
+}
 
 module.exports = {
   findElement,
