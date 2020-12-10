@@ -19,8 +19,9 @@
  *    'Tue, 26 Jan 2016 13:48:02 GMT' => Date()
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
-function parseDataFromRfc2822(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromRfc2822(value) {
+  const res = new Date(value);
+  return res;
 }
 
 /**
@@ -34,10 +35,10 @@ function parseDataFromRfc2822(/* value */) {
  *    '2016-01-19T16:07:37+00:00'    => Date()
  *    '2016-01-19T08:07:37Z' => Date()
  */
-function parseDataFromIso8601(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromIso8601(value) {
+  const res = new Date(value);
+  return res;
 }
-
 
 /**
  * Returns true if specified date is leap year and false otherwise
@@ -52,9 +53,22 @@ function parseDataFromIso8601(/* value */) {
  *    Date(2001,1,1)    => false
  *    Date(2012,1,1)    => true
  *    Date(2015,1,1)    => false
+ *
+ * if (year is not divisible by 4) then (it is a common year)
+     else if (year is not divisible by 100) then (it is a leap year)
+else if (year is not divisible by 400) then (it is a common year)
+else (it is a leap year)
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const year = date.getFullYear();
+  if (year % 4 !== 0) {
+    return false;
+  } if (year % 100 !== 0) {
+    return true;
+  } if (year % 400 !== 0) {
+    return false;
+  }
+  return true;
 }
 
 
@@ -73,10 +87,30 @@ function isLeapYear(/* date */) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
-}
+function timeSpanToString(startDate, endDate) {
+  const timeSpan = new Date(endDate) - new Date(startDate);
 
+  const hours = Math.floor(timeSpan / 3600000);
+  // eslint-disable-next-line no-mixed-operators
+  const minutes = Math.floor((timeSpan - 3600000 * hours) / 60000);
+  const sec = Math.floor(((timeSpan - 3600000 * hours) - 60000 * minutes) / 1000);
+  const ms = timeSpan % 1000;
+
+  // eslint-disable-next-line consistent-return
+  function addZero(num, digits = 2) {
+    if (digits === 2) {
+      return (num < 10) ? `0${num}` : num;
+    }
+    if (digits === 3) {
+      if (num < 10) {
+        return (`00${num}`);
+      }
+      return (num < 100) ? `0${num}` : num;
+    }
+  }
+  const result = `${addZero(hours)}:${addZero(minutes)}:${addZero(sec)}.${addZero(ms, 3)}`;
+  return result;
+}
 
 /**
  * Returns the angle (in radians) between the hands of an analog clock
@@ -93,9 +127,17 @@ function timeSpanToString(/* startDate, endDate */) {
  *    Date.UTC(2016,3,5, 3, 0) => Math.PI/2
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
+ *  Math.abs(0.5deg * (60 * hour - 11 * minutes))
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function angleBetweenClockHands(date) {
+  const DATA = new Date(date);
+  const hour = DATA.getUTCHours() % 12;
+  const minutes = DATA.getUTCMinutes();
+  const degToRad = Math.PI / 180;
+
+  const angle = Math.abs(0.5 * ((60 * hour) - (11 * minutes)));
+  const res = (angle > 180) ? 360 - angle : angle;
+  return res * degToRad;
 }
 
 
