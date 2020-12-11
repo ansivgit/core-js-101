@@ -32,7 +32,8 @@
  * @return {RegExp}
  */
 function getRegexForGuid() {
-  throw new Error('Not implemented');
+  const res = /\{[0-9][0-9a-f]{7}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\}/i;
+  return res;
 }
 
 
