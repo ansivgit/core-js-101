@@ -179,10 +179,17 @@ function isInsideCircle(circle, point) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
-}
+function findFirstSingleChar(str) {
+  const arr = str.split('');
 
+  const res = arr.find((item) => {
+    if (arr.indexOf(item) === arr.lastIndexOf(item)) {
+      return item;
+    }
+    return null;
+  });
+  return res || null;
+}
 
 /**
  * Returns the string representation of math interval,
@@ -206,8 +213,12 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const startBracket = (isStartIncluded) ? '[' : '(';
+  const endBracket = (isEndIncluded) ? ']' : ')';
+  return (a <= b)
+    ? `${startBracket}${a}, ${b}${endBracket}`
+    : `${startBracket}${b}, ${a}${endBracket}`;
 }
 
 
@@ -223,8 +234,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -240,8 +251,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return num.toString().split('').reverse().join('');
 }
 
 
@@ -283,8 +294,11 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const arr = num.toString().split('');
+  const sum = arr.reduce((acc, current) => Number(acc) + Number(current));
+
+  return (sum > 9) ? getDigitalRoot(sum) : sum;
 }
 
 
@@ -309,8 +323,28 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const array = str.split('');
+  const arr = [];
+  const openBrackets = ["'", '{', '(', '[', '<'];
+  const closeBrackets = ["'", '}', ')', ']', '>'];
+
+  array.map((item) => {
+    if (closeBrackets.includes(item) && arr.length !== 0) {
+      const correspondBracket = openBrackets[closeBrackets.indexOf(item)];
+      if (arr[arr.length - 1] === correspondBracket || arr[arr.length - 1] === item) {
+        arr.pop();
+      } else if (item !== correspondBracket) {
+        return false;
+      } else {
+        arr.push(item);
+      }
+    } else {
+      arr.push(item);
+    }
+    return arr;
+  });
+  return arr.length === 0;
 }
 
 
@@ -334,10 +368,9 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
-
 
 /**
  * Returns the commom directory path for specified array of full filenames.

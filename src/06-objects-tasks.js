@@ -159,9 +159,9 @@ const cssSelectorBuilder = {
   },
 
   // combine(selector1, combinator, selector2) {
-  //   this.sel1 = cssSelectorBuilder;
-  //   this.sel2 = cssSelectorBuilder;
-  //   this.str = `${this.sel1.selector1} ${combinator} ${this.sel2.selector2}`;
+  //   this.sel1 = cssSelectorBuilder(selector1);
+  //   this.sel2 = cssSelectorBuilder(selector2);
+  //   this.str = `${this.sel1} ${combinator} ${this.sel2}`;
 
   //   return this;
   // },
@@ -174,7 +174,11 @@ const cssSelectorBuilder = {
 };
 // const builder = cssSelectorBuilder;
 
-// console.log(builder.id('main').class('container').class('editable').stringify());
+// console.log(builder.combine(
+//         builder.element('p').pseudoClass('focus'),
+//         '>',
+//         builder.element('a').attr('href$=".png"'),
+//       ).stringify());
 
 
 module.exports = {
