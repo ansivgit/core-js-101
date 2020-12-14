@@ -55,9 +55,8 @@ function getRegexForGuid() {
  *
  */
 function getRegexForPitSpot() {
-  throw new Error('Not implemented');
+  return /^(pi|s|r)/;
 }
-
 
 /**
  * Returns the password validator regex.
